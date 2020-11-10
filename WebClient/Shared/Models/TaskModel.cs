@@ -8,5 +8,7 @@ namespace WebClient.Shared.Models
         public Guid Member { get; set; }
         public string Text { get; set; }
         public bool IsDone { get; set; }
+
+
     }
 }

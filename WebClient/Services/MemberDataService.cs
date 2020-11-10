@@ -26,7 +26,7 @@ namespace WebClient.Services
         private IEnumerable<MemberVm> members;
 
         public IEnumerable<MemberVm> Members => members;
-
+       
         public MemberVm SelectedMember { get; private set; }
 
         public event EventHandler MembersChanged;
@@ -34,14 +34,15 @@ namespace WebClient.Services
         public event EventHandler<string> CreateMemberFailed;
         public event EventHandler SelectedMemberChanged;
 
-        private async void LoadMembers()
+        public async void LoadMembers()
         {
             members = (await GetAllMembers()).Payload;
+          //  TaskMembers = (await GetAllMembers()).Payload;
             MembersChanged?.Invoke(this, null);
         }
 
         private async Task<CreateMemberCommandResult> Create(CreateMemberCommand command)
-        {            
+        {
             return await httpClient.PostJsonAsync<CreateMemberCommandResult>("members", command);
         }
 
@@ -57,15 +58,16 @@ namespace WebClient.Services
 
         public async Task UpdateMember(MemberVm model)
         {
+            
             var result = await Update(model.ToUpdateMemberCommand());
 
             Console.WriteLine(JsonSerializer.Serialize(result));
 
-            if(result != null)
+            if (result != null)
             {
                 var updatedList = (await GetAllMembers()).Payload;
 
-                if(updatedList != null)
+                if (updatedList != null)
                 {
                     members = updatedList;
                     MembersChanged?.Invoke(this, null);
@@ -98,6 +100,12 @@ namespace WebClient.Services
 
         public void SelectMember(Guid id)
         {
+            if (id == Guid.Empty)
+            {
+                SelectedMember = null;
+                SelectedMemberChanged?.Invoke(this, null);
+               
+            }
             if (members.All(memberVm => memberVm.Id != id)) return;
             {
                 SelectedMember = members.SingleOrDefault(memberVm => memberVm.Id == id);

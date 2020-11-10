@@ -4,42 +4,43 @@
 @using WebClient.Abstractions
 @using WebClient.Shared.Models
 @using WebClient.Components
+@using Plk.Blazor.DragDrop;
 @using WebClient.Shared.Components
 @inject IMemberDataService memberService;
 @inject ITaskDataService taskDataService;
 
-@if(isLoaded) {
-    <div class="page-wrapper row m-0 col-12 p-0">
-        <div class="col-4 p-0">
-            <LeftMenu />
-        </div>
-        <div class="col-8 p-0">
-            @if (showLister) {
-                <div class="col-10 offset-1 pt-5">
-                    <div class="row m-0">
-                        <Field class="col-9 p-0 custom-input">
-                            <TextEdit Placeholder="Enter New Task" @bind-text="@newTask"/>
-                        </Field>
-                        <div class="col-3 p-0 text-right">
-                            <Button class="add-btn px-4" @onclick="@OnAddItem">Add</Button>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-10 offset-1">
-                    <TaskListerComponent />
-                </div>
-            }
-            @if(false) {
-                <div class="col-10 offset-1 pt-5">
-                </div>
-            }
+
+@if (isLoaded)
+{
+<div class="page-wrapper row m-0 col-12 p-0">
+    <div class="col-4 p-0">
+        <LeftMenu />
+    </div>
+    <div class="col-8 p-0">
+        @if (showLister)
+        {
+           
+<div class="col-10 offset-1 pt-5">
+    <div class="row m-0">
+        <Field class="col-9 p-0 custom-input">
+            <TextEdit Placeholder="Enter New Task" @bind-text="@newTask" />
+        </Field>
+        <div class="col-3 p-0 text-right">
+            <Button class="add-btn px-4" @onclick="@OnAddItem">Add</Button>
         </div>
     </div>
-}
+</div>
+                    <div class="col-10 offset-1">
+                        <TaskListerComponent />
+                    </div>}
+        @if (false)
+        {
+<div class="col-10 offset-1 pt-5">
+</div>}
+    </div>
+</div>}
 
-@code {
-
-    public List<MemberVm> members;
+@code { public List<MemberVm> members;
     public string newTask;
 
 
@@ -54,25 +55,24 @@
     }
 
 
-    
+
 
     private void OnAddItem()
     {
-        var task = new TaskModel()
+        var task = new TaskVm()
         {
             Id = Guid.NewGuid(),
-            IsDone = false,
-            Text = newTask
+            IsComplete = false,
+            Subject = newTask,
+
         };
 
         newTask = string.Empty;
 
         if (memberService.SelectedMember != null)
         {
-            task.Member = memberService.SelectedMember.Id;
+            task.AssignedToId = memberService.SelectedMember.Id;
         }
         taskDataService.AddTask(task);
         StateHasChanged();
-    }
-
-}
+    } }

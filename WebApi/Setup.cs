@@ -19,13 +19,16 @@ namespace WebApi
             services.AddSwaggerGen();
 
             services.AddAutoMapper(typeof(MemberProfile).Assembly);
+            services.AddAutoMapper(typeof(TaskProfile).Assembly);
 
             services.AddMvc().AddFluentValidation(fv =>
                 fv.RegisterValidatorsFromAssemblyContaining<Startup>());
 
             services.AddDbContext<DataLayer.FamilyTaskContext>(options =>
             {
+                
                 options.UseSqlServer(configuration.GetSection("ConnectionStrings:SqlDb").Value);
+               
             });
 
             services.AddCors(options =>

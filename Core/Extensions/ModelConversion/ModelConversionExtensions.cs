@@ -24,6 +24,31 @@ namespace Core.Extensions.ModelConversion
             return command;
         }
 
+        public static CreateTaskCommand ToCreateTaskCommand(this TaskVm model)
+        {
+            var command = new CreateTaskCommand()
+            {
+                IsComplete = model.IsComplete,
+                Subject = model.Subject,
+                AssignedToId = model.AssignedToId,
+                
+            };
+            return command;
+        }
+
+        public static UpdateTaskCommand ToUpdateTaskCommand(this TaskVm model)
+        {
+            var command = new UpdateTaskCommand()
+            {
+                Id = model.Id,
+                IsComplete = model.IsComplete,
+                Subject = model.Subject,
+                AssignedToId = model.AssignedToId,
+
+            };
+            return command;
+        }
+
         public static MenuItem[] ToMenuItems(this IEnumerable<MemberVm> models)
         {
             return models.Select(m => new MenuItem()

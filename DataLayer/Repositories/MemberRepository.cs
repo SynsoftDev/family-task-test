@@ -9,7 +9,7 @@ namespace DataLayer
     public class MemberRepository : BaseRepository<Guid, Member, MemberRepository>, IMemberRepository
     {
         public MemberRepository(FamilyTaskContext context) : base(context)
-        { }
+        {}
 
        
 
@@ -20,6 +20,7 @@ namespace DataLayer
 
         IMemberRepository IBaseRepository<Guid, Member, IMemberRepository>.Reset()
         {
+            
             return base.Reset();
         }
 
